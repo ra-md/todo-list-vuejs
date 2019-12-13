@@ -26,23 +26,7 @@
     },
     data() {
       return {
-        todos: [
-          {
-            id: 1,
-            text: 'todo 1',
-            completed: true
-          },
-          {
-            id: 2,
-            text: 'todo 2',
-            completed: false
-          },
-          {
-            id: 3,
-            text: 'todo 3',
-            completed: false
-          },
-        ],
+        todos: [],
         text: '',
       }
     },
@@ -139,6 +123,11 @@
   .site-input-btn {
     background-color: #efefef;
     padding: 10px;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .site-input-btn:hover {
+    background-color: #d6d6d6;
     border-radius: 0 5px 5px 0;
   }
 
