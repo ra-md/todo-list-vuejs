@@ -9,8 +9,8 @@
     <main>
       <TodoList 
         :todosData="todos" 
-        @isCompleted="isCompleted" 
-        @delete-todo="deleteTodo"
+        @toggleMarkTodo="toggleMarkTodo" 
+        @deleteTodo="deleteTodo"
       />
     </main>
   </div>
@@ -18,6 +18,7 @@
 
 <script>
   import TodoList from './components/TodoList.vue'
+  import indexedDB from '@/utils/indexedDB.service';
 
   export default {
     name: 'app',
@@ -28,9 +29,22 @@
       return {
         todos: [],
         text: '',
+        message: ''
+      }
+    },
+    async mounted() {
+      if (!window.indexedDB) {
+       window.alert("Your browser doesn't support a stable version of IndexedDB.")
+      } else {
+        const result = await indexedDB.getTodos()
+        this.todos = result
       }
     },
     methods: {
+      async getTodos() {
+        const result = await indexedDB.getTodos()
+        this.todos = result
+      },
       generateNumber() {
         return Math.round(Math.random() * (100000 - 1) + 1)
       },
@@ -44,19 +58,24 @@
         const regex = /\S/
 
         if(regex.test(this.text)) {
-          this.todos.unshift(newtodo)
+          indexedDB.addTodo(newtodo)
+          this.getTodos()
         } 
 
         this.text = ''
       },
-      isCompleted(id) {
+      toggleMarkTodo(id) {
         this.todos.map(todo => {
-          if(todo.id === id) todo.completed = !todo.completed
+          if(todo.id === id) {
+            todo.completed = !todo.completed
+            indexedDB.toggleMarkTodo(id, todo.completed)
+          }
           return todo
         })
       },
       deleteTodo(id) {
-        this.todos = this.todos.filter(todo => todo.id !== id)
+        indexedDB.deleteTodo(id)
+        this.getTodos()
       }
     },
   }

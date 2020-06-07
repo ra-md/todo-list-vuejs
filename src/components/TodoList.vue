@@ -3,8 +3,8 @@
 		<TodoItem v-for="td in todosData" 
 			:key="td.id" 
 			:todo="td" 
-			@isCompleted="$emit('isCompleted', td.id)"
-			@delete-todo="$emit('delete-todo', td.id)"
+			@toggleMarkTodo="$emit('toggleMarkTodo', td.id)"
+			@deleteTodo="$emit('deleteTodo', td.id)"
 		/>
 	</div>
 </template>

@@ -1,8 +1,8 @@
 <template>
 	<div class="item">
-		<input @click="$emit('isCompleted', todo.id)" type="checkbox" :checked="todo.completed">
+		<input @click="$emit('toggleMarkTodo', todo.id)" type="checkbox" :checked="todo.completed">
 		<p :class="{ 'line-through': todo.completed }">{{ todo.text }}</p>
-		<button class="btn" @click="$emit('delete-todo', todo.id)"><i class="fas fa-trash"></i></button>
+		<button class="btn" @click="$emit('deleteTodo', todo.id)"><i class="fas fa-trash"></i></button>
 	</div>
 </template>
 
