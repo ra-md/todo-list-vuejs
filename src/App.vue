@@ -17,8 +17,9 @@
 </template>
 
 <script>
+  import { v4 as uuidv4 } from 'uuid'
   import TodoList from './components/TodoList.vue'
-  import indexedDB from '@/utils/indexedDB.service';
+  import indexedDB from '@/utils/indexedDB.service'
 
   export default {
     name: 'app',
@@ -44,12 +45,9 @@
         const result = await indexedDB.getTodos()
         this.todos = result
       },
-      generateNumber() {
-        return Math.round(Math.random() * (100000 - 1) + 1)
-      },
       addTodo() {
         const newtodo = {
-          id: this.generateNumber(),
+          id: uuidv4(),
           text: this.text,
           completed: false
         }

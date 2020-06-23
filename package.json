@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.4.3",
+    "uuid": "^8.1.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
