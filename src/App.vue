@@ -37,7 +37,6 @@
        window.alert("Your browser doesn't support a stable version of IndexedDB.")
       } else {
         const result = await indexedDB.getTodos()
-        this.todos = result
       }
     },
     methods: {
