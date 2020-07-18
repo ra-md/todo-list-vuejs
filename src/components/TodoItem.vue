@@ -35,5 +35,6 @@
 
 	.item input {
 		margin: 1em 0;
+		cursor: pointer;
 	}
 </style>

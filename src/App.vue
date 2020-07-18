@@ -8,7 +8,7 @@
     </header>
     <main>
       <TodoList 
-        :todosData="todos" 
+        :todosData="sortedTodo" 
         @toggleMarkTodo="toggleMarkTodo" 
         @deleteTodo="deleteTodo"
       />
@@ -19,7 +19,7 @@
 <script>
   import { v4 as uuidv4 } from 'uuid'
   import TodoList from './components/TodoList.vue'
-  import indexedDB from '@/utils/indexedDB.service'
+  import todoDB from '@/utils/indexedDB.service'
 
   export default {
     name: 'app',
@@ -37,25 +37,32 @@
       if (!window.indexedDB) {
        window.alert("Your browser doesn't support a stable version of IndexedDB.")
       } else {
-        const result = await indexedDB.getTodos()
+        this.getTodos()
+      }
+    },
+    computed: {
+      sortedTodo() {
+        const todo = this.todos.slice()
+        return todo.sort((a, b) => b.date - a.date)
       }
     },
     methods: {
       async getTodos() {
-        const result = await indexedDB.getTodos()
+        const result = await todoDB.get()
         this.todos = result
       },
       addTodo() {
         const newtodo = {
           id: uuidv4(),
           text: this.text,
+          date: Date.now(),
           completed: false
         }
 
         const regex = /\S/
 
         if(regex.test(this.text)) {
-          indexedDB.addTodo(newtodo)
+          todoDB.set(newtodo)
           this.getTodos()
         } 
 
@@ -65,13 +72,13 @@
         this.todos.map(todo => {
           if(todo.id === id) {
             todo.completed = !todo.completed
-            indexedDB.toggleMarkTodo(id, todo.completed)
+            todoDB.update(todo)
           }
           return todo
         })
       },
       deleteTodo(id) {
-        indexedDB.deleteTodo(id)
+        todoDB.delete(id)
         this.getTodos()
       }
     },
@@ -99,6 +106,7 @@
     background: none;
     outline: none;
     padding: 0;
+    cursor: pointer;
   }
 
   .site-header {
